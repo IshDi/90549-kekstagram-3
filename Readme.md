@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Динара Андрианова](https://up.htmlacademy.ru/javascript-individual/3/user/90549).
-* Наставник: `Неизвестно`.
+* Наставник: [Анастасия Гущина](https://htmlacademy.ru/profile/vanastasiya).
 
 ---
 
