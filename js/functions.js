@@ -1,6 +1,4 @@
-function isStringLengthValid (text, maxLength) {
-  return text.length <= maxLength;
-}
+const isStringLengthValid = (textInput, maxLength) => textInput.length <= maxLength;
 
 console.log("Должен выводить true. Выводит: " + isStringLengthValid("Привет!", 10));
 console.log("Должен выводить false. Выводит: " + isStringLengthValid("вфорвлыоврлфорвлфоырлворфл!", 10));
@@ -8,30 +6,31 @@ console.log("Должен выводить false. Выводит: " + isStringLe
 console.log("Должен выводить true. Выводит: " + isStringLengthValid("Как дела?", 20));
 
 
-function isPalindrome (text) {
-  const newText = text.replaceAll(' ', '').toLowerCase();
+function isPalindrome(text) {
+  text = text.replaceAll(' ', '').toLowerCase();
   let result = '';
-  for (let i = newText.length - 1; i >= 0; i--) {
-    result += newText[i];
+  for (let i = text.length - 1; i >= 0; i--) {
+    result += text[i];
   }
-  return newText === result;
+  return text === result;
 }
 
 console.log("Должен выводить true. Выводит: " + isPalindrome("топот"));
 console.log("Должен выводить true. Выводит: " + isPalindrome("ДовОд"));
 console.log("Должен выводить false. Выводит: " + isPalindrome("Кекс"));
 console.log("Должен выводить true. Выводит: " + isPalindrome("Лёша на полке клопа нашёл "));
+console.log("Должен выводить true. Выводит: " + isPalindrome("Лёша          на         полке клопа        нашёл "));
 console.log("Должен выводить true. Выводит: " + isPalindrome("a"));
 console.log("Должен выводить true. Выводит: " + isPalindrome("фиф"));
 
 
 function getNumber(str) {
   let result = '';
-  let newStr = str.toString();
-  for (let i = 0; i < newStr.length; i++) {
-    let num = parseInt(newStr[i]);
+  str = str.toString();
+  for (let i = 0; i < str.length; i++) {
+    let num = parseInt(str[i]);
     if (!isNaN(num)) {
-      result += newStr[i];
+      result += str[i];
     }
   }
   return result.length === 0 ? NaN : parseInt(result);
