@@ -48,43 +48,38 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-const getUniqueIndex = () => {
+const createIdGenerator = () => {
   let currentValue = 0;
-  return function () {
-    return ++currentValue;
-  };
+  return () => ++currentValue;
 };
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-const generateUniqueId = getUniqueIndex();
-const generateUniqueUrl = getUniqueIndex();
-const generateUniqueIdComment = getUniqueIndex();
+const getPhotoId = createIdGenerator();
+const getUrl = createIdGenerator();
+const getCommentId = createIdGenerator();
 
 const createMessage = (array) => {
   const index = getRandomInteger(0, 1);
 
   if (index === 1) {
-    const previousValues = [];
     const firstIndex = getRandomInteger(0, array.length - 1);
-    previousValues.push(firstIndex);
 
     let secondIndex;
     do {
       secondIndex = getRandomInteger(0, array.length - 1);
     } while (secondIndex === firstIndex);
-    previousValues.push(secondIndex);
 
-    return `${array[previousValues[0]]} ${array[previousValues[1]]}`;
+    return `${array[firstIndex]} ${array[secondIndex]}`;
   }
   return getRandomArrayElement(array);
 };
 
 const createComment = () => {
-  const id = generateUniqueIdComment();
+  const id = getCommentId();
 
   return {
-    id: id,
+    id,
     avatar: `img/avatar-${getRandomInteger(SIMILAR_AVATAR_MIN, SIMILAR_AVATAR_MAX)}.svg`,
     message: createMessage(COMMENT_MESSAGES),
     name: getRandomArrayElement(USER_NAMES),
@@ -92,20 +87,20 @@ const createComment = () => {
 };
 
 const createDescriptionPhoto = () => {
-  const id = generateUniqueId();
-  const url = generateUniqueUrl();
+  const id = getPhotoId();
+  const url = getUrl();
 
-  const similarCommentPhoto = Array.from({length: getRandomInteger(SIMILAR_COMMENT_PHOTO_COUNT_MIN, SIMILAR_COMMENT_PHOTO_COUNT_MAX)}, createComment);
+  const similarCommentPhotos = Array.from({length: getRandomInteger(SIMILAR_COMMENT_PHOTO_COUNT_MIN, SIMILAR_COMMENT_PHOTO_COUNT_MAX)}, createComment);
 
   return {
     id:  id,
     url: `photos/${url}.jpg`,
     description: getRandomArrayElement(DESCRIPTION_PHOTOS),
     likes: getRandomInteger(SIMILAR_LIKE_COUNT_MIN, SIMILAR_LIKE_COUNT_MAX),
-    comments: similarCommentPhoto, // массив
+    comments: similarCommentPhotos, // массив
   };
 };
 
-const similarDescriptionPhoto = Array.from({length: SIMILAR_DESCRIPTION_PHOTO_COUNT}, createDescriptionPhoto);
+const similarDescriptionPhotos = Array.from({length: SIMILAR_DESCRIPTION_PHOTO_COUNT}, createDescriptionPhoto);
 
-similarDescriptionPhoto();
+similarDescriptionPhotos();
