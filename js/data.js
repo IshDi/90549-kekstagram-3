@@ -89,6 +89,6 @@ const createDescriptionPhoto = () => {
   };
 };
 
-const similarDescriptionPhotos = () => Array.from({length: SIMILAR_DESCRIPTION_PHOTO_COUNT}, createDescriptionPhoto);
+const createSimilarDescriptionPhotos = () => Array.from({length: SIMILAR_DESCRIPTION_PHOTO_COUNT}, createDescriptionPhoto);
 
-export {similarDescriptionPhotos};
+export {createSimilarDescriptionPhotos};

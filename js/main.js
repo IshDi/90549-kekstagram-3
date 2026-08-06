@@ -1,4 +1,3 @@
-import './util.js';
-import {similarDescriptionPhotos} from './data.js';
+import {createSimilarDescriptionPhotos} from './data.js';
 
-similarDescriptionPhotos();
+createSimilarDescriptionPhotos();
