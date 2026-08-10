@@ -29,17 +29,7 @@ const getMinutes = (stringTime) => {
   return parseInt(arrayTime[0], 10) * 60 + parseInt(arrayTime[1], 10);
 };
 
-const isMeetingPossible = (workingStart, workingEnd, meetingStart, slotDuration) => {
-  let isPossible = true;
+const isMeetingPossible = (workingStart, workingEnd, meetingStart, slotDuration) =>
+  getMinutes(workingStart) <= getMinutes(meetingStart) && ((getMinutes(meetingStart) + slotDuration) <= getMinutes(workingEnd));
 
-  if (getMinutes(workingStart) > getMinutes(meetingStart)) {
-    isPossible = false;
-  }
-
-  if ((getMinutes(meetingStart) + slotDuration) > getMinutes(workingEnd)) {
-    isPossible = false;
-  }
-
-  return isPossible;
-};
 isMeetingPossible('08:00', '17:30', '14:00', 90);
