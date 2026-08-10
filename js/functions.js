@@ -11,7 +11,6 @@ const isPalindrome = (text) => {
 };
 isPalindrome('топот');
 
-
 const getNumber = (value) => {
   let result = '';
   const stringValue = value.toString();
@@ -24,3 +23,13 @@ const getNumber = (value) => {
   return parseInt(result, 10);
 };
 getNumber('ECMAScript 2022');
+
+const getMinutes = (stringTime) => {
+  const arrayTime = stringTime.split(':');
+  return parseInt(arrayTime[0], 10) * 60 + parseInt(arrayTime[1], 10);
+};
+
+const isMeetingPossible = (workingStart, workingEnd, meetingStart, slotDuration) =>
+  getMinutes(workingStart) <= getMinutes(meetingStart) && ((getMinutes(meetingStart) + slotDuration) <= getMinutes(workingEnd));
+
+isMeetingPossible('08:00', '17:30', '14:00', 90);
