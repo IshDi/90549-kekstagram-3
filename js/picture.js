@@ -5,7 +5,7 @@ const renderPictures = (picturesContainer, similarPictures) => {
   similarPictures.forEach(({id, url, description, likes, comments}) => {
     const pictureElement = similarPictureTemplate.cloneNode(true);
     const pictureElementImg = pictureElement.querySelector('.picture__img');
-    pictureElementImg.dataset.id = id;
+    pictureElement.dataset.id = id;
     pictureElementImg.src = url;
     pictureElementImg.alt = description;
     pictureElement.querySelector('.picture__likes').textContent = likes;
