@@ -2,9 +2,10 @@ const similarPictureTemplate = document.querySelector('#picture').content.queryS
 const similarListFragment = document.createDocumentFragment();
 
 const renderPictures = (picturesContainer, similarPictures) => {
-  similarPictures.forEach(({url, description, likes, comments}) => {
+  similarPictures.forEach(({id, url, description, likes, comments}) => {
     const pictureElement = similarPictureTemplate.cloneNode(true);
     const pictureElementImg = pictureElement.querySelector('.picture__img');
+    pictureElement.dataset.id = id;
     pictureElementImg.src = url;
     pictureElementImg.alt = description;
     pictureElement.querySelector('.picture__likes').textContent = likes;

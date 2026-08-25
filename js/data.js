@@ -1,4 +1,4 @@
-import {getRandomInteger, createIdGenerator, getRandomArrayElement} from './util.js';
+import { getRandomInteger, createIdGenerator, getRandomArrayElement } from './util.js';
 
 const DESCRIPTION_PHOTOS = [
   'На снимке запечатлен живописный закат над морским горизонтом, окрашивающий небо в яркие оранжево-розовые тона.',
@@ -91,4 +91,4 @@ const createDescriptionPhoto = () => {
 
 const createSimilarDescriptionPhotos = () => Array.from({length: SIMILAR_DESCRIPTION_PHOTO_COUNT}, createDescriptionPhoto);
 
-export {createSimilarDescriptionPhotos};
+export { createSimilarDescriptionPhotos };
