@@ -75,6 +75,7 @@ const openBigPicture = (data) => {
 function closeBigPicture () {
   bigPictureElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
+
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
@@ -84,6 +85,13 @@ bigPictureCloseButton.addEventListener('click', () => {
 
 const initBigPicture = (picturesContainer, pictures) => {
   picturesContainer.addEventListener('click', (evt) => {
+    if (evt.target.closest('.img-upload__input') ||
+        evt.target.closest('.img-upload__label') ||
+        evt.target.closest('.img-upload__form') ||
+        evt.target.closest('.img-upload__submit')) {
+      return;
+    }
+
     evt.preventDefault();
     const thumbnail = evt.target.closest('.picture');
     if (!thumbnail) {
