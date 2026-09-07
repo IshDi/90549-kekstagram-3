@@ -1,12 +1,12 @@
-const scaleControlSmaller = document.querySelector('.scale__control--smaller');
-const scaleControlBigger = document.querySelector('.scale__control--bigger');
-const scaleControlValue = document.querySelector('.scale__control--value');
-const imageUploadPreview = document.querySelector('.img-upload__preview img');
-
 const SCALE_CONTROL_STEP = 25;
 const SCALE_CONTROL_MIN = 25;
 const SCALE_CONTROL_MAX = 100;
 const SCALE_CONTROL_DEFAULT = 100;
+
+const scaleControlSmaller = document.querySelector('.scale__control--smaller');
+const scaleControlBigger = document.querySelector('.scale__control--bigger');
+const scaleControlValue = document.querySelector('.scale__control--value');
+const imageUploadPreview = document.querySelector('.img-upload__preview img');
 
 let currentValue = 100;
 
@@ -48,5 +48,3 @@ const resetPhotoScale = () => {
 };
 
 export { initPhotoScale, resetPhotoScale };
-
-// удалить обработчики
