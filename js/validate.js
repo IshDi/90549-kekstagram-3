@@ -7,6 +7,8 @@ const ERROR_MESSAGES = {
 };
 
 const PATTERN_HASH = /^#[a-zа-яё0-9]{1,19}$/i;
+const HASHTAG_COUNT = 5;
+const LENGTH_COMMENT = 140;
 
 const imageUploadFormElement = document.querySelector('.img-upload__form');
 const hashTagField = document.querySelector('.text__hashtags');
@@ -18,6 +20,8 @@ const pristine = new Pristine(imageUploadFormElement, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
+const isEmpty = (value) => !value || value.trim() === '';
+
 const getHashtags = (value) => {
   if (!value || value.trim() === '') {
     return [];
@@ -26,7 +30,7 @@ const getHashtags = (value) => {
 };
 
 const validateHashtagFormat = (value) => {
-  if (!value || value.trim() === '') {
+  if (isEmpty(value)) {
     return true;
   }
 
@@ -35,16 +39,16 @@ const validateHashtagFormat = (value) => {
 };
 
 const validateHashtagCount = (value) => {
-  if (!value || value.trim() === '') {
+  if (isEmpty(value)) {
     return true;
   }
 
   const hashtags = getHashtags(value);
-  return hashtags.length <= 5;
+  return hashtags.length <= HASHTAG_COUNT;
 };
 
 const validateHashtagUnique = (value) => {
-  if (!value || value.trim() === '') {
+  if (isEmpty(value)) {
     return true;
   }
 
@@ -53,39 +57,15 @@ const validateHashtagUnique = (value) => {
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
-const validateHashtagNotOnlyHash = (value) => {
-  if (!value || value.trim() === '') {
-    return true;
-  }
-
-  const hashtags = getHashtags(value);
-  return hashtags.every((tag) => tag !== '#');
-};
-
-const validateHashtagSeparated = (value) => {
-  if (!value || value.trim() === '') {
-    return true;
-  }
-  const hashtags = getHashtags(value);
-
-  return hashtags.every((tag) => {
-    const hashCount = (tag.match(/#/g) || []).length;
-    return hashCount === 1 && tag.startsWith('#');
-  });
-};
-
 const validateCommentLength = (value) => {
   const stringLength = value.length;
-  return stringLength <= 140;
+  return stringLength <= LENGTH_COMMENT;
 };
 
-pristine.addValidator(hashTagField, validateHashtagSeparated, ERROR_MESSAGES.hashtagsMissingSpaces, 1);
-pristine.addValidator(hashTagField, validateHashtagFormat, ERROR_MESSAGES.invalidHashtag, 2);
+pristine.addValidator(hashTagField, validateHashtagFormat, ERROR_MESSAGES.invalidHashtag);
 pristine.addValidator(hashTagField, validateHashtagCount, ERROR_MESSAGES.hashtagLimitExceeded);
 pristine.addValidator(hashTagField, validateHashtagUnique, ERROR_MESSAGES.duplicateHashtags);
-pristine.addValidator(hashTagField, validateHashtagNotOnlyHash, ERROR_MESSAGES.invalidHashtag);
 pristine.addValidator(commentField, validateCommentLength, ERROR_MESSAGES.commentTooLong);
-
 
 const validateForms = () => {
   imageUploadFormElement.addEventListener('submit', (evt) => {
@@ -98,4 +78,8 @@ const validateForms = () => {
   });
 };
 
-export { validateForms };
+const resetValidateForms = () => {
+  pristine.reset();
+};
+
+export { validateForms, resetValidateForms };

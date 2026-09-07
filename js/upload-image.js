@@ -1,5 +1,6 @@
 import { isEscapeKey } from './util.js';
 import { initPhotoScale, resetPhotoScale } from './scale-image.js';
+import { resetValidateForms } from './validate.js';
 
 const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadInput = imageUploadForm.querySelector('.img-upload__input');
@@ -47,8 +48,8 @@ function closeUploadForm () {
   hashTagField.removeEventListener('keydown', onFocusKeydown);
   commentField.removeEventListener('keydown', onFocusKeydown);
   imageUploadInput.value = '';
-  hashTagField.value = '';
-  commentField.value = '';
+  imageUploadForm.reset();
+  resetValidateForms();
 }
 
 const initUploadImage = () => {
