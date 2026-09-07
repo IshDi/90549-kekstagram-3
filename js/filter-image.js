@@ -2,7 +2,7 @@ const sliderElement = document.querySelector('.effect-level__slider');
 const sliderValue = document.querySelector('.effect-level__value');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
 const imageUploadPreview = document.querySelector('.img-upload__preview img');
-const sliderRadios = document.querySelectorAll('.effects__radio');
+const effectsList = document.querySelector('.effects__list');
 
 const EFFECTS_OPTIONS = {
   none: {
@@ -11,7 +11,7 @@ const EFFECTS_OPTIONS = {
     max: 1,
     step: 0.1,
     start: 1,
-    format: (value) => `${Math.round(value * 100)}%`
+    unit: ''
   },
   chrome: {
     filter: 'grayscale',
@@ -19,7 +19,7 @@ const EFFECTS_OPTIONS = {
     max: 1,
     step: 0.1,
     start: 1,
-    format: (value) => `${Math.round(value * 100)}%`
+    unit: ''
   },
   sepia: {
     filter: 'sepia',
@@ -27,41 +27,41 @@ const EFFECTS_OPTIONS = {
     max: 1,
     step: 0.1,
     start: 1,
-    format: (value) => `${Math.round(value * 100)}%`
+    unit: ''
   },
   marvin: {
     filter: 'invert',
     min: 0,
-    max: 1,
-    step: 0.01,
-    start: 1,
-    format: (value) => `${Math.round(value * 100)}%`
+    max: 100,
+    step: 1,
+    start: 100,
+    unit: '%'
   },
   phobos: {
     filter: 'blur',
     min: 0,
-    max: 1,
-    step: 0.0333,
-    start: 1,
-    format: (value) => `${Number((value * 3).toFixed(1))}px`
+    max: 3,
+    step: 0.1,
+    start: 3,
+    unit: 'px'
   },
   heat: {
     filter: 'brightness',
     min: 1,
-    max: 1,
-    step: 0.05,
-    start: 1,
-    format: (value) => `${Number((1 + value * 2).toFixed(1))}`
+    max: 3,
+    step: 0.1,
+    start: 3,
+    unit: ''
   }
 };
 
 let currentEffect = 'none';
 let slider = null;
 
-const updateFiter = (effect, value) => {
+const updateFilter = (effect, value) => {
   const config = EFFECTS_OPTIONS[effect];
 
-  sliderValue.value = config.format(value);
+  sliderValue.value = value;
 
   if (effect === 'none' || !config.filter) {
     imageUploadPreview.style.filter = '';
@@ -69,8 +69,7 @@ const updateFiter = (effect, value) => {
     return;
   }
 
-  imageUploadPreview.style.filter = `${config.filter}(${config.format(value)})`;
-  sliderValue.textContent = config.format(value);
+  imageUploadPreview.style.filter = `${config.filter}(${value}${config.unit})`;
   sliderContainer.classList.remove('hidden');
 };
 
@@ -80,23 +79,26 @@ const setEffect = (effect) => {
   }
   currentEffect = effect;
   const config = EFFECTS_OPTIONS[effect];
-  const startValue = effect === 'none' ? 0 : config.start;
-  if (slider) {
-    slider.set(startValue);
-  }
-  updateFiter(effect, startValue);
-};
 
-const onRadioChecked = (evt) => {
-  if (evt.target.checked) {
-    setEffect(evt.target.value);
+  if (slider) {
+    slider.updateOptions({
+      range: {
+        min: config.min,
+        max: config.max,
+      },
+      start: config.start,
+      step: config.step
+    });
+    const startValue = effect === 'none' ? '' : config.start;
+    slider.set(startValue);
+    updateFilter(effect, startValue);
   }
 };
 
 const onSliderChange = (values) => {
   const value = Number(values[0]);
   if (currentEffect !== 'none') {
-    updateFiter(currentEffect, value);
+    updateFilter(currentEffect, value);
   }
 };
 
@@ -118,8 +120,8 @@ const initSlider = () => {
   slider = sliderElement.noUiSlider;
   slider.on('update', onSliderChange);
 
-  sliderRadios.forEach((radio) => {
-    radio.addEventListener('change', onRadioChecked);
+  effectsList.addEventListener('change', (evt) => {
+    setEffect(evt.target.value);
   });
 
   sliderContainer.classList.add('hidden');
@@ -131,10 +133,6 @@ const destroySlider = () => {
     return;
   }
 
-  sliderRadios.forEach((radio) => {
-    radio.removeEventListener('change', onRadioChecked);
-  });
-
   slider.off('update', onSliderChange);
   slider.destroy();
   slider = null;
@@ -142,11 +140,7 @@ const destroySlider = () => {
   currentEffect = 'none';
   imageUploadPreview.style.filter = '';
   sliderContainer.classList.add('hidden');
-  sliderValue.textContent = '100%';
-
-  sliderRadios.forEach((radio) => {
-    radio.checked = radio.value === 'none';
-  });
+  sliderValue.value = EFFECTS_OPTIONS.none.start;
 };
 
 export { initSlider, destroySlider };
