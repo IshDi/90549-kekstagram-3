@@ -140,7 +140,7 @@ const destroySlider = () => {
   currentEffect = 'none';
   imageUploadPreview.style.filter = '';
   sliderContainer.classList.add('hidden');
-  sliderValue.value = EFFECTS_OPTIONS.none.start;
+  sliderValue.value = '';
 };
 
 export { initSlider, destroySlider };
