@@ -1,6 +1,7 @@
 import { isEscapeKey } from './util.js';
 import { initPhotoScale, resetPhotoScale } from './scale-image.js';
 import { resetValidateForms } from './validate.js';
+import { initSlider, destroySlider } from './filter-image.js';
 
 const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadInput = imageUploadForm.querySelector('.img-upload__input');
@@ -33,6 +34,7 @@ const openUploadForm = () => {
   imageUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   initPhotoScale();
+  initSlider();
 
   document.addEventListener('keydown', onDocumentKeydown);
   hashTagField.addEventListener('keydown', onFocusKeydown);
@@ -43,6 +45,7 @@ function closeUploadForm () {
   imageUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   resetPhotoScale();
+  destroySlider();
 
   document.removeEventListener('keydown', onDocumentKeydown);
   hashTagField.removeEventListener('keydown', onFocusKeydown);
