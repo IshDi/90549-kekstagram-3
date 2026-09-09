@@ -4,6 +4,7 @@ import { initUploadImage, closeUploadForm } from './upload-image.js';
 import { setUserFormSubmit } from './validate.js';
 import { getData } from './api.js';
 import { showErrorMessage } from './util.js';
+import { debounce, throttle } from './util.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const messageDataError = document.querySelector('#data-error').content.querySelector('.data-error');
