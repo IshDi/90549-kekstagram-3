@@ -1,13 +1,20 @@
 import { renderPictures } from './picture.js';
-import { createSimilarDescriptionPhotos } from './data.js';
 import { initBigPicture } from './big-picture.js';
-import { initUploadImage } from './upload-image.js';
-import { validateForms } from './validate.js';
+import { initUploadImage, closeUploadForm } from './upload-image.js';
+import { setUserFormSubmit } from './validate.js';
+import { getData } from './api.js';
+import { showErrorMessage } from './util.js';
 
 const picturesContainer = document.querySelector('.pictures');
-const similarPictures = createSimilarDescriptionPhotos();
+const messageDataError = document.querySelector('#data-error').content.querySelector('.data-error');
 
-renderPictures(picturesContainer, similarPictures);
-initBigPicture(picturesContainer, similarPictures);
+getData()
+  .then((data) => {
+    renderPictures(picturesContainer, data);
+    initBigPicture(picturesContainer, data);
+  }).catch(() => {
+    showErrorMessage(messageDataError);
+  });
+
 initUploadImage();
-validateForms();
+setUserFormSubmit(closeUploadForm);

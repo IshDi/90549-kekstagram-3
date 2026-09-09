@@ -9,9 +9,29 @@ const imageUploadOverlay = imageUploadForm.querySelector('.img-upload__overlay')
 const imageUploadCancel = imageUploadForm.querySelector('.img-upload__cancel');
 const hashTagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
+const imageSubmitButton = imageUploadForm.querySelector('.img-upload__submit');
+
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Идет публикация...'
+};
+
+const blockSubmitButton = () => {
+  imageSubmitButton.disabled = true;
+  imageSubmitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  imageSubmitButton.disabled = false;
+  imageSubmitButton.textContent = SubmitButtonText.IDLE;
+};
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
+    const openErrorMessage = document.querySelector('.error');
+    if (openErrorMessage) {
+      return;
+    }
     evt.preventDefault();
     closeUploadForm();
   }
@@ -28,14 +48,13 @@ const onFocusKeydown = (evt) => {
   }
 };
 
-imageUploadCancel.addEventListener('click', onCancelButtonClick);
-
 const openUploadForm = () => {
   imageUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   initPhotoScale();
   initSlider();
 
+  imageUploadCancel.addEventListener('click', onCancelButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
   hashTagField.addEventListener('keydown', onFocusKeydown);
   commentField.addEventListener('keydown', onFocusKeydown);
@@ -47,6 +66,7 @@ function closeUploadForm () {
   resetPhotoScale();
   destroySlider();
 
+  imageUploadCancel.removeEventListener('click', onCancelButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
   hashTagField.removeEventListener('keydown', onFocusKeydown);
   commentField.removeEventListener('keydown', onFocusKeydown);
@@ -58,11 +78,8 @@ function closeUploadForm () {
 const initUploadImage = () => {
   imageUploadInput.addEventListener('change', (evt) => {
     evt.stopPropagation();
-    const file = evt.target.files[0];
-    if (file) {
-      openUploadForm();
-    }
+    openUploadForm();
   });
 };
 
-export { initUploadImage };
+export { initUploadImage, closeUploadForm, blockSubmitButton, unblockSubmitButton };

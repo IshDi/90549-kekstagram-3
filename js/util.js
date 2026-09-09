@@ -1,17 +1,54 @@
-const getRandomInteger = (min, max) => {
-  const lower = Math.ceil(Math.min(min, max));
-  const upper = Math.floor(Math.max(min, max));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-const createIdGenerator = () => {
-  let currentValue = 0;
-  return () => ++currentValue;
-};
-
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+const SHOW_TIME = 5000;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export { getRandomInteger, createIdGenerator, getRandomArrayElement, isEscapeKey };
+const showMessage = (template) => {
+  const element = template.cloneNode(true);
+  document.body.append(element);
+
+  const onKeydown = (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      closeMessage();
+    }
+  };
+
+  const onOutsideClick = (evt) => {
+    if (evt.target === element) {
+      closeMessage();
+    }
+  };
+
+  function closeMessage () {
+    if (element.parentNode) {
+      element.remove();
+    }
+    document.removeEventListener('keydown', onKeydown);
+    document.removeEventListener('click', onOutsideClick);
+  }
+
+  document.addEventListener('keydown', onKeydown);
+  document.addEventListener('click', onOutsideClick);
+
+  const button = element.querySelector('button');
+  if (button) {
+    button.addEventListener('click', (evt) => {
+      evt.stopPropagation();
+      closeMessage();
+    });
+  }
+
+  return element;
+};
+
+const showErrorMessage = (template) => {
+  const cloneTemplate = template.cloneNode(true);
+  document.body.append(cloneTemplate);
+
+  setTimeout(() => {
+    cloneTemplate.remove();
+  }, SHOW_TIME);
+};
+
+export { isEscapeKey, showErrorMessage, showMessage };
