@@ -3,6 +3,8 @@ import { initPhotoScale, resetPhotoScale } from './scale-image.js';
 import { resetValidateForms } from './validate.js';
 import { initSlider, destroySlider } from './filter-image.js';
 
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
 const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadInput = imageUploadForm.querySelector('.img-upload__input');
 const imageUploadOverlay = imageUploadForm.querySelector('.img-upload__overlay');
@@ -10,6 +12,7 @@ const imageUploadCancel = imageUploadForm.querySelector('.img-upload__cancel');
 const hashTagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 const imageSubmitButton = imageUploadForm.querySelector('.img-upload__submit');
+const preview = imageUploadForm.querySelector('.img-upload__preview img');
 
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
@@ -78,6 +81,14 @@ function closeUploadForm () {
 const initUploadImage = () => {
   imageUploadInput.addEventListener('change', (evt) => {
     evt.stopPropagation();
+    const file = imageUploadInput.files[0];
+    const fileName = file.name.toLowerCase();
+    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+    if (matches) {
+      preview.src = URL.createObjectURL(file);
+    }
+
     openUploadForm();
   });
 };
