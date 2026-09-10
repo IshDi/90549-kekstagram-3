@@ -1,3 +1,7 @@
+import { sendData } from './api.js';
+import { showMessage } from './util.js';
+import { blockSubmitButton, unblockSubmitButton } from './upload-image';
+
 const ERROR_MESSAGES = {
   invalidHashtag: 'введён невалидный хэштег (от 1 до 20 символов, включая решётку)',
   hashtagLimitExceeded: 'превышено количество хэштегов',
@@ -13,6 +17,8 @@ const LENGTH_COMMENT = 140;
 const imageUploadFormElement = document.querySelector('.img-upload__form');
 const hashTagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
+const messageSuccess = document.querySelector('#success').content.querySelector('.success');
+const messageError = document.querySelector('#error').content.querySelector('.error');
 
 const pristine = new Pristine(imageUploadFormElement, {
   classTo: 'img-upload__field-wrapper',
@@ -67,13 +73,22 @@ pristine.addValidator(hashTagField, validateHashtagCount, ERROR_MESSAGES.hashtag
 pristine.addValidator(hashTagField, validateHashtagUnique, ERROR_MESSAGES.duplicateHashtags);
 pristine.addValidator(commentField, validateCommentLength, ERROR_MESSAGES.commentTooLong);
 
-const validateForms = () => {
+const setUserFormSubmit = (onSuccess) => {
   imageUploadFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     const isValid = pristine.validate();
     if (isValid) {
-      imageUploadFormElement.submit();
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .then(() => {
+          showMessage(messageSuccess);
+        })
+        .catch(() => {
+          showMessage(messageError);
+        })
+        .finally(unblockSubmitButton);
     }
   });
 };
@@ -82,4 +97,4 @@ const resetValidateForms = () => {
   pristine.reset();
 };
 
-export { validateForms, resetValidateForms };
+export { setUserFormSubmit, resetValidateForms };
