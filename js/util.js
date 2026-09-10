@@ -1,4 +1,5 @@
 const SHOW_TIME = 5000;
+const DEBOUNCE_TIME = 500;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -51,7 +52,7 @@ const showErrorMessage = (template) => {
   }, SHOW_TIME);
 };
 
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback, timeoutDelay = DEBOUNCE_TIME) => {
   let timeoutId;
 
   return (...rest) => {
@@ -70,6 +71,15 @@ const throttle = (callback, delayBetweenFrames) => {
       lastTime = now;
     }
   };
-}
+};
 
-export { isEscapeKey, showErrorMessage, showMessage, debounce, throttle };
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+export { isEscapeKey, showErrorMessage, showMessage, debounce, throttle, shuffleArray };
