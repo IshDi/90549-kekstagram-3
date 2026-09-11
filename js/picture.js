@@ -6,7 +6,7 @@ const similarPictureTemplate = document.querySelector('#picture').content.queryS
 const filterContainer = document.querySelector('.img-filters');
 const picturesContainer = document.querySelector('.pictures');
 
-const renderSimilarList = (similarPictures, filterId) => {
+const renderSimilarList = (similarPictures, filterId = 'filter-default') => {
   const similarListFragment = document.createDocumentFragment();
 
   let pictures = [...similarPictures];
