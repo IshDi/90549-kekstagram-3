@@ -10,7 +10,7 @@ const messageDataError = document.querySelector('#data-error').content.querySele
 
 getData()
   .then((data) => {
-    renderSimilarList(data, 'filter-default');
+    renderSimilarList(data);
     initBigPicture(picturesContainer, data);
     initFilters(data);
   }).catch(() => {
