@@ -1,4 +1,4 @@
-import { renderSimilarList, initFilters } from './picture.js';
+import { renderPictureList, initFilters } from './picture.js';
 import { initBigPicture } from './big-picture.js';
 import { initUploadImage, closeUploadForm } from './upload-image.js';
 import { setUserFormSubmit } from './validate.js';
@@ -10,7 +10,7 @@ const messageDataError = document.querySelector('#data-error').content.querySele
 
 getData()
   .then((data) => {
-    renderSimilarList(data);
+    renderPictureList(data);
     initBigPicture(picturesContainer, data);
     initFilters(data);
   }).catch(() => {

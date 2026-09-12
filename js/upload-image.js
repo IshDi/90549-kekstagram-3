@@ -1,7 +1,7 @@
 import { isEscapeKey } from './util.js';
 import { initPhotoScale, resetPhotoScale } from './scale-image.js';
 import { resetValidateForms } from './validate.js';
-import { initSlider, destroySlider } from './filter-image.js';
+import { initSlider, resetSlider } from './filter-image.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
@@ -13,6 +13,9 @@ const hashTagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 const imageSubmitButton = imageUploadForm.querySelector('.img-upload__submit');
 const preview = imageUploadForm.querySelector('.img-upload__preview img');
+const previewEffectImages = imageUploadForm.querySelectorAll('.effects__preview');
+
+let uploadedFile;
 
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
@@ -67,7 +70,7 @@ function closeUploadForm () {
   imageUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   resetPhotoScale();
-  destroySlider();
+  resetSlider();
 
   imageUploadCancel.removeEventListener('click', onCancelButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
@@ -76,6 +79,10 @@ function closeUploadForm () {
   imageUploadInput.value = '';
   imageUploadForm.reset();
   resetValidateForms();
+  URL.revokeObjectURL(uploadedFile);
+  previewEffectImages.forEach((previewImage) => {
+    previewImage.style.backgroundImage = '';
+  });
 }
 
 const initUploadImage = () => {
@@ -84,9 +91,15 @@ const initUploadImage = () => {
     const file = imageUploadInput.files[0];
     const fileName = file.name.toLowerCase();
     const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+    uploadedFile = file;
 
     if (matches) {
+      const imageUrl = URL.createObjectURL(file);
       preview.src = URL.createObjectURL(file);
+
+      previewEffectImages.forEach((previewImage) => {
+        previewImage.style.backgroundImage = `url(${imageUrl})`;
+      });
     }
 
     openUploadForm();

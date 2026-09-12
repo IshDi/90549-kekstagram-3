@@ -2,17 +2,16 @@ import { sendData } from './api.js';
 import { showMessage } from './util.js';
 import { blockSubmitButton, unblockSubmitButton } from './upload-image';
 
-const ERROR_MESSAGES = {
-  invalidHashtag: 'введён невалидный хэштег (от 1 до 20 символов, включая решётку)',
-  hashtagLimitExceeded: 'превышено количество хэштегов',
-  duplicateHashtags: 'хэштеги повторяются',
-  commentTooLong: 'длина комментария больше 140 символов',
-  hashtagsMissingSpaces: 'хэштеги должны быть разделены пробелами и начинаться с #',
-};
-
 const PATTERN_HASH = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_COUNT = 5;
 const LENGTH_COMMENT = 140;
+
+const ErrorMessages = {
+  invalidHashtag: 'введён невалидный хэштег (от 1 до 20 символов, включая решётку)',
+  hashtagLimitExceeded: 'превышено количество хэштегов',
+  duplicateHashtags: 'хэштеги повторяются',
+  commentTooLong: 'длина комментария больше 140 символов'
+};
 
 const imageUploadFormElement = document.querySelector('.img-upload__form');
 const hashTagField = document.querySelector('.text__hashtags');
@@ -68,10 +67,10 @@ const validateCommentLength = (value) => {
   return stringLength <= LENGTH_COMMENT;
 };
 
-pristine.addValidator(hashTagField, validateHashtagFormat, ERROR_MESSAGES.invalidHashtag);
-pristine.addValidator(hashTagField, validateHashtagCount, ERROR_MESSAGES.hashtagLimitExceeded);
-pristine.addValidator(hashTagField, validateHashtagUnique, ERROR_MESSAGES.duplicateHashtags);
-pristine.addValidator(commentField, validateCommentLength, ERROR_MESSAGES.commentTooLong);
+pristine.addValidator(hashTagField, validateHashtagFormat, ErrorMessages.invalidHashtag);
+pristine.addValidator(hashTagField, validateHashtagCount, ErrorMessages.hashtagLimitExceeded);
+pristine.addValidator(hashTagField, validateHashtagUnique, ErrorMessages.duplicateHashtags);
+pristine.addValidator(commentField, validateCommentLength, ErrorMessages.commentTooLong);
 
 const setUserFormSubmit = (onSuccess) => {
   imageUploadFormElement.addEventListener('submit', (evt) => {

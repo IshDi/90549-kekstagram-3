@@ -7,7 +7,7 @@ const showMessage = (template) => {
   const element = template.cloneNode(true);
   document.body.append(element);
 
-  const onKeydown = (evt) => {
+  const onMessageKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       evt.stopPropagation();
@@ -25,11 +25,11 @@ const showMessage = (template) => {
     if (element.parentNode) {
       element.remove();
     }
-    document.removeEventListener('keydown', onKeydown);
+    document.removeEventListener('keydown', onMessageKeydown);
     document.removeEventListener('click', onOutsideClick);
   }
 
-  document.addEventListener('keydown', onKeydown);
+  document.addEventListener('keydown', onMessageKeydown);
   document.addEventListener('click', onOutsideClick);
 
   const button = element.querySelector('button');

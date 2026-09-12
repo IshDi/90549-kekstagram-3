@@ -6,10 +6,10 @@ const similarPictureTemplate = document.querySelector('#picture').content.queryS
 const filterContainer = document.querySelector('.img-filters');
 const picturesContainer = document.querySelector('.pictures');
 
-const renderSimilarList = (similarPictures, filterId = 'filter-default') => {
+const renderPictureList = (data, filterId = 'filter-default') => {
   const similarListFragment = document.createDocumentFragment();
 
-  let pictures = [...similarPictures];
+  let pictures = [...data];
 
   if (filterId === 'filter-random') {
     pictures = shuffleArray(pictures).slice(0, RANDOM_PHOTO_COUNT);
@@ -34,9 +34,9 @@ const renderSimilarList = (similarPictures, filterId = 'filter-default') => {
   picturesContainer.append(similarListFragment);
 };
 
-const renderSimilarListDebounced = debounce(renderSimilarList);
+const renderPictureListDebounced = debounce(renderPictureList);
 
-const initFilters = (similarPictures) => {
+const initFilters = (data) => {
   filterContainer.classList.remove('img-filters--inactive');
 
   filterContainer.addEventListener('click', (evt) => {
@@ -50,8 +50,8 @@ const initFilters = (similarPictures) => {
     });
     target.classList.add('img-filters__button--active');
 
-    renderSimilarListDebounced(similarPictures, target.id);
+    renderPictureListDebounced(data, target.id);
   });
 };
 
-export { renderSimilarList, initFilters };
+export { renderPictureList, initFilters };
