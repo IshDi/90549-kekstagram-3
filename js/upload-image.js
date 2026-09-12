@@ -1,32 +1,35 @@
 import { isEscapeKey } from './util.js';
 import { initPhotoScale, resetPhotoScale } from './scale-image.js';
 import { resetValidateForms } from './validate.js';
-import { initSlider, destroySlider } from './filter-image.js';
+import { initSlider, resetSlider } from './filter-image.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-const imageUploadForm = document.querySelector('.img-upload__form');
-const imageUploadInput = imageUploadForm.querySelector('.img-upload__input');
-const imageUploadOverlay = imageUploadForm.querySelector('.img-upload__overlay');
-const imageUploadCancel = imageUploadForm.querySelector('.img-upload__cancel');
-const hashTagField = document.querySelector('.text__hashtags');
-const commentField = document.querySelector('.text__description');
-const imageSubmitButton = imageUploadForm.querySelector('.img-upload__submit');
-const preview = imageUploadForm.querySelector('.img-upload__preview img');
+const imageUploadFormElement = document.querySelector('.img-upload__form');
+const imageUploadInputElement = imageUploadFormElement.querySelector('.img-upload__input');
+const imageUploadOverlayElement = imageUploadFormElement.querySelector('.img-upload__overlay');
+const imageUploadCancelElement = imageUploadFormElement.querySelector('.img-upload__cancel');
+const hashTagFieldElement = imageUploadFormElement.querySelector('.text__hashtags');
+const commentFieldElement = imageUploadFormElement.querySelector('.text__description');
+const imageSubmitButtonElement = imageUploadFormElement.querySelector('.img-upload__submit');
+const previewElement = imageUploadFormElement.querySelector('.img-upload__preview img');
+const previewEffectImageElements = imageUploadFormElement.querySelectorAll('.effects__preview');
 
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SENDING: 'Идет публикация...'
 };
 
+let uploadedFile;
+
 const blockSubmitButton = () => {
-  imageSubmitButton.disabled = true;
-  imageSubmitButton.textContent = SubmitButtonText.SENDING;
+  imageSubmitButtonElement.disabled = true;
+  imageSubmitButtonElement.textContent = SubmitButtonText.SENDING;
 };
 
 const unblockSubmitButton = () => {
-  imageSubmitButton.disabled = false;
-  imageSubmitButton.textContent = SubmitButtonText.IDLE;
+  imageSubmitButtonElement.disabled = false;
+  imageSubmitButtonElement.textContent = SubmitButtonText.IDLE;
 };
 
 const onDocumentKeydown = (evt) => {
@@ -52,41 +55,52 @@ const onFocusKeydown = (evt) => {
 };
 
 const openUploadForm = () => {
-  imageUploadOverlay.classList.remove('hidden');
+  imageUploadOverlayElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   initPhotoScale();
   initSlider();
 
-  imageUploadCancel.addEventListener('click', onCancelButtonClick);
+  imageUploadCancelElement.addEventListener('click', onCancelButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
-  hashTagField.addEventListener('keydown', onFocusKeydown);
-  commentField.addEventListener('keydown', onFocusKeydown);
+  hashTagFieldElement.addEventListener('keydown', onFocusKeydown);
+  commentFieldElement.addEventListener('keydown', onFocusKeydown);
 };
 
 function closeUploadForm () {
-  imageUploadOverlay.classList.add('hidden');
+  imageUploadOverlayElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   resetPhotoScale();
-  destroySlider();
+  resetSlider();
 
-  imageUploadCancel.removeEventListener('click', onCancelButtonClick);
+  imageUploadCancelElement.removeEventListener('click', onCancelButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
-  hashTagField.removeEventListener('keydown', onFocusKeydown);
-  commentField.removeEventListener('keydown', onFocusKeydown);
-  imageUploadInput.value = '';
-  imageUploadForm.reset();
+  hashTagFieldElement.removeEventListener('keydown', onFocusKeydown);
+  commentFieldElement.removeEventListener('keydown', onFocusKeydown);
+  imageUploadInputElement.value = '';
+  imageUploadFormElement.reset();
   resetValidateForms();
+
+  URL.revokeObjectURL(uploadedFile);
+  previewEffectImageElements.forEach((previewImage) => {
+    previewImage.style.backgroundImage = '';
+  });
 }
 
 const initUploadImage = () => {
-  imageUploadInput.addEventListener('change', (evt) => {
+  imageUploadInputElement.addEventListener('change', (evt) => {
     evt.stopPropagation();
-    const file = imageUploadInput.files[0];
+    const file = imageUploadInputElement.files[0];
     const fileName = file.name.toLowerCase();
     const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+    uploadedFile = file;
 
     if (matches) {
-      preview.src = URL.createObjectURL(file);
+      const imageUrl = URL.createObjectURL(file);
+      previewElement.src = URL.createObjectURL(file);
+
+      previewEffectImageElements.forEach((previewImage) => {
+        previewImage.style.backgroundImage = `url(${imageUrl})`;
+      });
     }
 
     openUploadForm();

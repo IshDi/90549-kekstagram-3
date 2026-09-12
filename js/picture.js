@@ -2,14 +2,14 @@ import { shuffleArray, debounce } from './util.js';
 
 const RANDOM_PHOTO_COUNT = 10;
 
-const similarPictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const filterContainer = document.querySelector('.img-filters');
-const picturesContainer = document.querySelector('.pictures');
+const pictureTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
+const filterContainerElement = document.querySelector('.img-filters');
+const pictureContainerElement = document.querySelector('.pictures');
 
-const renderSimilarList = (similarPictures, filterId = 'filter-default') => {
+const renderPictureList = (data, filterId = 'filter-default') => {
   const similarListFragment = document.createDocumentFragment();
 
-  let pictures = [...similarPictures];
+  let pictures = [...data];
 
   if (filterId === 'filter-random') {
     pictures = shuffleArray(pictures).slice(0, RANDOM_PHOTO_COUNT);
@@ -18,7 +18,7 @@ const renderSimilarList = (similarPictures, filterId = 'filter-default') => {
   }
 
   pictures.forEach(({id, url, description, likes, comments}) => {
-    const pictureElement = similarPictureTemplate.cloneNode(true);
+    const pictureElement = pictureTemplateElement.cloneNode(true);
     const pictureElementImg = pictureElement.querySelector('.picture__img');
     pictureElement.dataset.id = id;
     pictureElementImg.src = url;
@@ -28,18 +28,18 @@ const renderSimilarList = (similarPictures, filterId = 'filter-default') => {
     similarListFragment.append(pictureElement);
   });
 
-  const oldPictures = picturesContainer.querySelectorAll('.picture');
+  const oldPictures = pictureContainerElement.querySelectorAll('.picture');
   oldPictures.forEach((picture) => picture.remove());
 
-  picturesContainer.append(similarListFragment);
+  pictureContainerElement.append(similarListFragment);
 };
 
-const renderSimilarListDebounced = debounce(renderSimilarList);
+const renderPictureListDebounced = debounce(renderPictureList);
 
-const initFilters = (similarPictures) => {
-  filterContainer.classList.remove('img-filters--inactive');
+const initFilters = (data) => {
+  filterContainerElement.classList.remove('img-filters--inactive');
 
-  filterContainer.addEventListener('click', (evt) => {
+  filterContainerElement.addEventListener('click', (evt) => {
     const target = evt.target.closest('.img-filters__button');
     if (!target || target.classList.contains('img-filters__button--active')) {
       return;
@@ -50,8 +50,8 @@ const initFilters = (similarPictures) => {
     });
     target.classList.add('img-filters__button--active');
 
-    renderSimilarListDebounced(similarPictures, target.id);
+    renderPictureListDebounced(data, target.id);
   });
 };
 
-export { renderSimilarList, initFilters };
+export { renderPictureList, initFilters };
