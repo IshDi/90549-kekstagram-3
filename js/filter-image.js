@@ -1,8 +1,9 @@
-const sliderElement = document.querySelector('.effect-level__slider');
-const sliderValueElement = document.querySelector('.effect-level__value');
-const sliderContainerElement = document.querySelector('.img-upload__effect-level');
-const imageUploadPreviewElement = document.querySelector('.img-upload__preview img');
-const effectsListElement = document.querySelector('.effects__list');
+const imageUploadFormElement = document.querySelector('.img-upload__form');
+const imageUploadPreviewElement = imageUploadFormElement.querySelector('.img-upload__preview img');
+const sliderElement = imageUploadFormElement.querySelector('.effect-level__slider');
+const sliderValueElement = imageUploadFormElement.querySelector('.effect-level__value');
+const sliderContainerElement = imageUploadFormElement.querySelector('.img-upload__effect-level');
+const effectsListElement = imageUploadFormElement.querySelector('.effects__list');
 
 const EffectOptions = {
   none: {

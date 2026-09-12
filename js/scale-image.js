@@ -3,10 +3,11 @@ const SCALE_CONTROL_MIN = 25;
 const SCALE_CONTROL_MAX = 100;
 const SCALE_CONTROL_DEFAULT = 100;
 
-const scaleControlSmaller = document.querySelector('.scale__control--smaller');
-const scaleControlBigger = document.querySelector('.scale__control--bigger');
-const scaleControlValue = document.querySelector('.scale__control--value');
-const imageUploadPreview = document.querySelector('.img-upload__preview img');
+const imageUploadFormElement = document.querySelector('.img-upload__form');
+const scaleControlSmallerElement = imageUploadFormElement.querySelector('.scale__control--smaller');
+const scaleControlBiggerElement = imageUploadFormElement.querySelector('.scale__control--bigger');
+const scaleControlValueElement = imageUploadFormElement.querySelector('.scale__control--value');
+const imageUploadPreviewElement = imageUploadFormElement.querySelector('.img-upload__preview img');
 
 let currentValue = 100;
 
@@ -21,10 +22,10 @@ const updateScale = (value) => {
 
   currentValue = value;
 
-  scaleControlValue.value = `${currentValue}%`;
+  scaleControlValueElement.value = `${currentValue}%`;
 
   const scaleTransform = currentValue / 100;
-  imageUploadPreview.style.transform = `scale(${scaleTransform})`;
+  imageUploadPreviewElement.style.transform = `scale(${scaleTransform})`;
 };
 
 const onScaleControlSmallerClick = () => {
@@ -37,14 +38,12 @@ const onScaleControlBiggerClick = () => {
 
 const initPhotoScale = () => {
   updateScale(SCALE_CONTROL_DEFAULT);
-  scaleControlSmaller.addEventListener('click', onScaleControlSmallerClick);
-  scaleControlBigger.addEventListener('click', onScaleControlBiggerClick);
+  scaleControlSmallerElement.addEventListener('click', onScaleControlSmallerClick);
+  scaleControlBiggerElement.addEventListener('click', onScaleControlBiggerClick);
 };
 
 const resetPhotoScale = () => {
   updateScale(SCALE_CONTROL_DEFAULT);
-  scaleControlSmaller.removeEventListener('click', onScaleControlSmallerClick);
-  scaleControlBigger.removeEventListener('click', onScaleControlBiggerClick);
 };
 
 export { initPhotoScale, resetPhotoScale };

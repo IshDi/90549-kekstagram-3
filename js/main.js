@@ -5,16 +5,16 @@ import { setUserFormSubmit } from './validate.js';
 import { getData } from './api.js';
 import { showErrorMessage } from './util.js';
 
-const picturesContainer = document.querySelector('.pictures');
-const messageDataError = document.querySelector('#data-error').content.querySelector('.data-error');
+const picturesContainerElement = document.querySelector('.pictures');
+const messageDataErrorElement = document.querySelector('#data-error').content.querySelector('.data-error');
 
 getData()
   .then((data) => {
     renderPictureList(data);
-    initBigPicture(picturesContainer, data);
+    initBigPicture(picturesContainerElement, data);
     initFilters(data);
   }).catch(() => {
-    showErrorMessage(messageDataError);
+    showErrorMessage(messageDataErrorElement);
   });
 
 initUploadImage();

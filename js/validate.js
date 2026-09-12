@@ -14,10 +14,10 @@ const ErrorMessages = {
 };
 
 const imageUploadFormElement = document.querySelector('.img-upload__form');
-const hashTagField = document.querySelector('.text__hashtags');
-const commentField = document.querySelector('.text__description');
-const messageSuccess = document.querySelector('#success').content.querySelector('.success');
-const messageError = document.querySelector('#error').content.querySelector('.error');
+const hashTagFieldElement = imageUploadFormElement.querySelector('.text__hashtags');
+const commentFieldElement = imageUploadFormElement.querySelector('.text__description');
+const messageSuccessElement = document.querySelector('#success').content.querySelector('.success');
+const messageErrorElement = document.querySelector('#error').content.querySelector('.error');
 
 const pristine = new Pristine(imageUploadFormElement, {
   classTo: 'img-upload__field-wrapper',
@@ -67,10 +67,10 @@ const validateCommentLength = (value) => {
   return stringLength <= LENGTH_COMMENT;
 };
 
-pristine.addValidator(hashTagField, validateHashtagFormat, ErrorMessages.invalidHashtag);
-pristine.addValidator(hashTagField, validateHashtagCount, ErrorMessages.hashtagLimitExceeded);
-pristine.addValidator(hashTagField, validateHashtagUnique, ErrorMessages.duplicateHashtags);
-pristine.addValidator(commentField, validateCommentLength, ErrorMessages.commentTooLong);
+pristine.addValidator(hashTagFieldElement, validateHashtagFormat, ErrorMessages.invalidHashtag);
+pristine.addValidator(hashTagFieldElement, validateHashtagCount, ErrorMessages.hashtagLimitExceeded);
+pristine.addValidator(hashTagFieldElement, validateHashtagUnique, ErrorMessages.duplicateHashtags);
+pristine.addValidator(commentFieldElement, validateCommentLength, ErrorMessages.commentTooLong);
 
 const setUserFormSubmit = (onSuccess) => {
   imageUploadFormElement.addEventListener('submit', (evt) => {
@@ -82,10 +82,10 @@ const setUserFormSubmit = (onSuccess) => {
       sendData(new FormData(evt.target))
         .then(onSuccess)
         .then(() => {
-          showMessage(messageSuccess);
+          showMessage(messageSuccessElement);
         })
         .catch(() => {
-          showMessage(messageError);
+          showMessage(messageErrorElement);
         })
         .finally(unblockSubmitButton);
     }

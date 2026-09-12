@@ -2,9 +2,9 @@ import { shuffleArray, debounce } from './util.js';
 
 const RANDOM_PHOTO_COUNT = 10;
 
-const similarPictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const filterContainer = document.querySelector('.img-filters');
-const picturesContainer = document.querySelector('.pictures');
+const pictureTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
+const filterContainerElement = document.querySelector('.img-filters');
+const pictureContainerElement = document.querySelector('.pictures');
 
 const renderPictureList = (data, filterId = 'filter-default') => {
   const similarListFragment = document.createDocumentFragment();
@@ -18,7 +18,7 @@ const renderPictureList = (data, filterId = 'filter-default') => {
   }
 
   pictures.forEach(({id, url, description, likes, comments}) => {
-    const pictureElement = similarPictureTemplate.cloneNode(true);
+    const pictureElement = pictureTemplateElement.cloneNode(true);
     const pictureElementImg = pictureElement.querySelector('.picture__img');
     pictureElement.dataset.id = id;
     pictureElementImg.src = url;
@@ -28,18 +28,18 @@ const renderPictureList = (data, filterId = 'filter-default') => {
     similarListFragment.append(pictureElement);
   });
 
-  const oldPictures = picturesContainer.querySelectorAll('.picture');
+  const oldPictures = pictureContainerElement.querySelectorAll('.picture');
   oldPictures.forEach((picture) => picture.remove());
 
-  picturesContainer.append(similarListFragment);
+  pictureContainerElement.append(similarListFragment);
 };
 
 const renderPictureListDebounced = debounce(renderPictureList);
 
 const initFilters = (data) => {
-  filterContainer.classList.remove('img-filters--inactive');
+  filterContainerElement.classList.remove('img-filters--inactive');
 
-  filterContainer.addEventListener('click', (evt) => {
+  filterContainerElement.addEventListener('click', (evt) => {
     const target = evt.target.closest('.img-filters__button');
     if (!target || target.classList.contains('img-filters__button--active')) {
       return;
