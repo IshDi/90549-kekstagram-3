@@ -61,25 +61,13 @@ const debounce = (callback, timeoutDelay = DEBOUNCE_TIME) => {
   };
 };
 
-const throttle = (callback, delayBetweenFrames) => {
-  let lastTime = 0;
-
-  return (...rest) => {
-    const now = new Date();
-    if (now - lastTime >= delayBetweenFrames) {
-      callback.apply(this, rest);
-      lastTime = now;
-    }
-  };
-};
-
-const shuffleArray = (array) => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
+const shuffleArray = (items) => {
+  const shuffledItems = [...items];
+  for (let i = shuffledItems.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    [shuffledItems[i], shuffledItems[j]] = [shuffledItems[j], shuffledItems[i]];
   }
-  return shuffled;
+  return shuffledItems;
 };
 
-export { isEscapeKey, showErrorMessage, showMessage, debounce, throttle, shuffleArray };
+export { isEscapeKey, showErrorMessage, showMessage, debounce, shuffleArray };

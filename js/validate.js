@@ -1,12 +1,12 @@
 import { sendData } from './api.js';
 import { showMessage } from './util.js';
-import { blockSubmitButton, unblockSubmitButton } from './upload-image';
+import { blockSubmitButton, unblockSubmitButton } from './upload-image.js';
 
 const PATTERN_HASH = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_COUNT = 5;
 const LENGTH_COMMENT = 140;
 
-const ErrorMessages = {
+const errorMessages = {
   invalidHashtag: 'введён невалидный хэштег (от 1 до 20 символов, включая решётку)',
   hashtagLimitExceeded: 'превышено количество хэштегов',
   duplicateHashtags: 'хэштеги повторяются',
@@ -67,10 +67,10 @@ const validateCommentLength = (value) => {
   return stringLength <= LENGTH_COMMENT;
 };
 
-pristine.addValidator(hashTagFieldElement, validateHashtagFormat, ErrorMessages.invalidHashtag);
-pristine.addValidator(hashTagFieldElement, validateHashtagCount, ErrorMessages.hashtagLimitExceeded);
-pristine.addValidator(hashTagFieldElement, validateHashtagUnique, ErrorMessages.duplicateHashtags);
-pristine.addValidator(commentFieldElement, validateCommentLength, ErrorMessages.commentTooLong);
+pristine.addValidator(hashTagFieldElement, validateHashtagFormat, errorMessages.invalidHashtag);
+pristine.addValidator(hashTagFieldElement, validateHashtagCount, errorMessages.hashtagLimitExceeded);
+pristine.addValidator(hashTagFieldElement, validateHashtagUnique, errorMessages.duplicateHashtags);
+pristine.addValidator(commentFieldElement, validateCommentLength, errorMessages.commentTooLong);
 
 const setUserFormSubmit = (onSuccess) => {
   imageUploadFormElement.addEventListener('submit', (evt) => {
