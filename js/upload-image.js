@@ -5,6 +5,11 @@ import { initSlider, resetSlider } from './filter-image.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Идет публикация...'
+};
+
 const imageUploadFormElement = document.querySelector('.img-upload__form');
 const imageUploadInputElement = imageUploadFormElement.querySelector('.img-upload__input');
 const imageUploadOverlayElement = imageUploadFormElement.querySelector('.img-upload__overlay');
@@ -14,11 +19,6 @@ const commentFieldElement = imageUploadFormElement.querySelector('.text__descrip
 const imageSubmitButtonElement = imageUploadFormElement.querySelector('.img-upload__submit');
 const previewElement = imageUploadFormElement.querySelector('.img-upload__preview img');
 const previewEffectImageElements = imageUploadFormElement.querySelectorAll('.effects__preview');
-
-const SubmitButtonText = {
-  IDLE: 'Опубликовать',
-  SENDING: 'Идет публикация...'
-};
 
 let uploadedFile;
 
@@ -90,18 +90,26 @@ const initUploadImage = () => {
   imageUploadInputElement.addEventListener('change', (evt) => {
     evt.stopPropagation();
     const file = imageUploadInputElement.files[0];
+
+    if (!file) {
+      return;
+    }
+
     const fileName = file.name.toLowerCase();
-    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+    const matches = FILE_TYPES.some((item) => fileName.endsWith(item));
+
+    if (!matches) {
+      return;
+    }
+
     uploadedFile = file;
 
-    if (matches) {
-      const imageUrl = URL.createObjectURL(file);
-      previewElement.src = URL.createObjectURL(file);
+    const imageUrl = URL.createObjectURL(file);
+    previewElement.src = imageUrl;
 
-      previewEffectImageElements.forEach((previewImage) => {
-        previewImage.style.backgroundImage = `url(${imageUrl})`;
-      });
-    }
+    previewEffectImageElements.forEach((previewImage) => {
+      previewImage.style.backgroundImage = `url(${imageUrl})`;
+    });
 
     openUploadForm();
   });
