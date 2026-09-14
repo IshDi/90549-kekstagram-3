@@ -3,8 +3,9 @@ import { shuffleArray, debounce } from './util.js';
 const RANDOM_PHOTO_COUNT = 10;
 
 const pictureTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
-const filterContainerElement = document.querySelector('.img-filters');
 const pictureContainerElement = document.querySelector('.pictures');
+const filterContainerElement = document.querySelector('.img-filters');
+const filterButtonElements = filterContainerElement.querySelectorAll('.img-filters__button');
 
 const renderPictureList = (data, filterId = 'filter-default') => {
   const similarListFragment = document.createDocumentFragment();
@@ -45,7 +46,7 @@ const initFilters = (data) => {
       return;
     }
 
-    document.querySelectorAll('.img-filters__button').forEach((button) => {
+    filterButtonElements.forEach((button) => {
       button.classList.remove('img-filters__button--active');
     });
     target.classList.add('img-filters__button--active');
