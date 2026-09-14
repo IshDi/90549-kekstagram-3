@@ -103,6 +103,10 @@ const onSliderChange = (values) => {
   }
 };
 
+const onEffectChange = (evt) => {
+  setEffect(evt.target.value);
+};
+
 const initSlider = () => {
   if (slider) {
     return;
@@ -121,9 +125,7 @@ const initSlider = () => {
   slider = sliderElement.noUiSlider;
   slider.on('update', onSliderChange);
 
-  effectsListElement.addEventListener('change', (evt) => {
-    setEffect(evt.target.value);
-  });
+  effectsListElement.addEventListener('change', onEffectChange);
 
   sliderContainerElement.classList.add('hidden');
   setEffect('none');
@@ -142,6 +144,7 @@ const resetSlider = () => {
   imageUploadPreviewElement.style.filter = '';
   sliderContainerElement.classList.add('hidden');
   sliderValueElement.value = '';
+  effectsListElement.removeEventListener('change', onEffectChange);
 };
 
 export { initSlider, resetSlider };
