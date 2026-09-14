@@ -5,7 +5,8 @@ const RANDOM_PHOTO_COUNT = 10;
 const pictureTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainerElement = document.querySelector('.pictures');
 const filterContainerElement = document.querySelector('.img-filters');
-let activeFilterButton = filterContainerElement.querySelector('.img-filters__button--active');
+
+let activeFilterButtonElement = null;
 
 const renderPictureList = (data, filterId = 'filter-default') => {
   const similarListFragment = document.createDocumentFragment();
@@ -39,6 +40,7 @@ const renderPictureListDebounced = debounce(renderPictureList);
 
 const initFilters = (data) => {
   filterContainerElement.classList.remove('img-filters--inactive');
+  activeFilterButtonElement = filterContainerElement.querySelector('.img-filters__button--active');
 
   filterContainerElement.addEventListener('click', (evt) => {
     const target = evt.target.closest('.img-filters__button');
@@ -46,12 +48,12 @@ const initFilters = (data) => {
       return;
     }
 
-    if (activeFilterButton) {
-      activeFilterButton.classList.remove('img-filters__button--active');
+    if (activeFilterButtonElement) {
+      activeFilterButtonElement.classList.remove('img-filters__button--active');
     }
 
     target.classList.add('img-filters__button--active');
-    activeFilterButton = target;
+    activeFilterButtonElement = target;
 
     renderPictureListDebounced(data, target.id);
   });
