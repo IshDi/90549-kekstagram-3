@@ -5,7 +5,7 @@ const sliderValueElement = imageUploadFormElement.querySelector('.effect-level__
 const sliderContainerElement = imageUploadFormElement.querySelector('.img-upload__effect-level');
 const effectsListElement = imageUploadFormElement.querySelector('.effects__list');
 
-const effectOptions = {
+const EFFECT_OPTIONS = {
   none: {
     filter: null,
     min: 0,
@@ -60,7 +60,7 @@ let currentEffect = 'none';
 let slider = null;
 
 const updateFilter = (effect, value) => {
-  const config = effectOptions[effect];
+  const config = EFFECT_OPTIONS[effect];
 
   sliderValueElement.value = value;
 
@@ -79,7 +79,7 @@ const setEffect = (effect) => {
     return;
   }
   currentEffect = effect;
-  const config = effectOptions[effect];
+  const config = EFFECT_OPTIONS[effect];
 
   if (slider) {
     slider.updateOptions({
