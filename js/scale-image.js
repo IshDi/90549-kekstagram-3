@@ -44,6 +44,8 @@ const initPhotoScale = () => {
 
 const resetPhotoScale = () => {
   updateScale(SCALE_CONTROL_DEFAULT);
+  scaleControlSmallerElement.removeEventListener('click', onScaleControlSmallerClick);
+  scaleControlBiggerElement.removeEventListener('click', onScaleControlBiggerClick);
 };
 
 export { initPhotoScale, resetPhotoScale };
